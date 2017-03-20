@@ -22,18 +22,22 @@ public class ShopDaoImpl extends AbstractDao implements ShopDao {
     @Override
     public Timestamp getLastcheckByShopId(BigInteger shopId) {
         Criteria criteria = getSession().createCriteria(Shop.class);
-        criteria.add(Restrictions.eq("shop_id",shopId));
+        criteria.add(Restrictions.eq("shop_id", shopId));
         criteria.addOrder(Order.desc("timestamp"));
         criteria.setMaxResults(1);
-        Shop result = (Shop)criteria.uniqueResult();
-        return result.getTimestamp();
+        Shop result = (Shop) criteria.uniqueResult();
+        if (result != null) {
+            return result.getTimestamp();
+        } else {
+            return null;
+        }
 
     }
 
     @Override
     public List<Shop> getShopByShopId(BigInteger shopId) {
         Criteria criteria = getSession().createCriteria(Shop.class);
-        criteria.add(Restrictions.eq("shop_id",shopId));
+        criteria.add(Restrictions.eq("shop_id", shopId));
         return (List<Shop>) criteria.list();
     }
 
