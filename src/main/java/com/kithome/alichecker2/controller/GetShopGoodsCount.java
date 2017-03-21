@@ -40,7 +40,7 @@ public class GetShopGoodsCount {
 
         if (lastcheck == null) {
             result += "Нет данных добавляю ...";
-            addRecord(newShop.getShop_id(), newShop.getCount(), newShop.getTimestamp());
+            service.addRecord(newShop);
             lastcheck = service.getLastcheckByShopId(newShop.getShop_id());
         }
 
@@ -48,28 +48,21 @@ public class GetShopGoodsCount {
 
         if (lastcheck.before(now)) {
             result += "добавляю запись... ";
-            addRecord(newShop.getShop_id(), newShop.getCount(), newShop.getTimestamp());
+            service.addRecord(newShop);
             List<Shop> shops = service.getShopByShopId(newShop.getShop_id());
             for (Shop sh1 : shops) {
-                result = result.concat(sh1.toString() + " ");
+                result = result.concat(sh1.toString() + "*********");
             }
         } else {
             result += "актуально... ";
             List<Shop> shops = service.getShopByShopId(newShop.getShop_id());
             for (Shop sh1 : shops) {
-                result = result.concat(sh1.toString() + " ");
+                result = result.concat(sh1.toString() + "*********");
             }
         }
         return result;
     }
 
-    private void addRecord(BigInteger shop_id, int counter, Timestamp timestamp) {
-        Shop shop = new Shop();
-        shop.setShop_id(shop_id);
-        shop.setCount(counter);
-        shop.setTimestamp(timestamp);
-        service.addRecord(shop);
-    }
 
     private Shop getShopFromUrl(String url) {
         Document doc;

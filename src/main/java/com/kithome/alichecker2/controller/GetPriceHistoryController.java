@@ -50,13 +50,13 @@ public class GetPriceHistoryController {
             service.addRecord(newItem);
             List<Item> items = service.getItembyItemId(newItem.getItem_id());
             for (Item it1 : items) {
-                result = result.concat(it1.toString() + " ");
+                result = result.concat(it1.toString() + "*********");
             }
         } else {
             result += "актуально... ";
             List<Item> items = service.getItembyItemId(newItem.getItem_id());
             for (Item it1 : items) {
-                result = result.concat(it1.toString() + " ");
+                result = result.concat(it1.toString() + "*********");
             }
         }
         return result;
