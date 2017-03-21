@@ -2,6 +2,8 @@ package com.kithome.alichecker2.controller;
 
 import com.kithome.alichecker2.model.Item;
 import com.kithome.alichecker2.service.ItemService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,13 +34,15 @@ public class GetPriceHistoryController {
     @ResponseBody
     String getPriceHistory(@RequestParam(value = "url", required = true) String url) {
 
+        //JSONArray ar = new JSONArray();
+        JSONObject obj = new JSONObject();
+        JSONObject resultJson = new JSONObject();
+
         Item newItem = getItemFromUrl(url);//get item info from url
-        String result = "Проверка...";
 
         Timestamp lastcheck = service.getLastcheckByItemId(newItem.getItem_id());
 
         if (lastcheck == null) {
-            result += "Нет данных добавляю ...";
             service.addRecord(newItem);
             lastcheck = service.getLastcheckByItemId(newItem.getItem_id());
         }
@@ -46,20 +50,24 @@ public class GetPriceHistoryController {
         Timestamp now = new Timestamp(System.currentTimeMillis() - 3 * 10 * 1000);
 
         if (lastcheck.before(now)) {
-            result += "добавляю запись... ";
             service.addRecord(newItem);
             List<Item> items = service.getItembyItemId(newItem.getItem_id());
             for (Item it1 : items) {
-                result = result.concat(it1.toString() + "*********");
+                obj= new JSONObject();
+                obj.put("item_price",it1.getItem_price());
+                obj.put("timestamp",it1.getTimestamp());
+                resultJson.append(it1.getItem_id().toString(),obj);
             }
         } else {
-            result += "актуально... ";
             List<Item> items = service.getItembyItemId(newItem.getItem_id());
             for (Item it1 : items) {
-                result = result.concat(it1.toString() + "*********");
+                obj= new JSONObject();
+                obj.put("item_price",it1.getItem_price());
+                obj.put("timestamp",it1.getTimestamp());
+                resultJson.append(it1.getItem_id().toString(),obj);
             }
         }
-        return result;
+        return resultJson.toString();
     }
 
     private Item getItemFromUrl(String url) {

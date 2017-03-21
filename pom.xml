@@ -93,6 +93,13 @@
             <version>${joda-time.version}</version>
         </dependency>
 
+        <!-- JSON -->
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20160810</version>
+        </dependency>
+
         <!-- To map JodaTime with database type -->
         <dependency>
             <groupId>org.jadira.usertype</groupId>

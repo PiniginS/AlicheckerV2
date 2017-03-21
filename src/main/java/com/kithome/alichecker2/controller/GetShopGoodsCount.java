@@ -2,6 +2,7 @@ package com.kithome.alichecker2.controller;
 
 import com.kithome.alichecker2.model.Shop;
 import com.kithome.alichecker2.service.ShopService;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -32,14 +33,14 @@ public class GetShopGoodsCount {
     @ResponseBody
     String getShopGoodsCount(@RequestParam(value = "url", required = true) String url) {
 
-        Shop newShop = getShopFromUrl(url);//get shop info from url
+        JSONObject obj = new JSONObject();
+        JSONObject resultJson = new JSONObject();
 
-        String result = "Проверка...";
+        Shop newShop = getShopFromUrl(url);//get shop info from url
 
         Timestamp lastcheck = service.getLastcheckByShopId(newShop.getShop_id());
 
         if (lastcheck == null) {
-            result += "Нет данных добавляю ...";
             service.addRecord(newShop);
             lastcheck = service.getLastcheckByShopId(newShop.getShop_id());
         }
@@ -47,20 +48,24 @@ public class GetShopGoodsCount {
         Timestamp now = new Timestamp(System.currentTimeMillis() - 3 * 10 * 1000);
 
         if (lastcheck.before(now)) {
-            result += "добавляю запись... ";
             service.addRecord(newShop);
             List<Shop> shops = service.getShopByShopId(newShop.getShop_id());
             for (Shop sh1 : shops) {
-                result = result.concat(sh1.toString() + "*********");
+                obj= new JSONObject();
+                obj.put("count",sh1.getCount());
+                obj.put("timestamp",sh1.getTimestamp());
+                resultJson.append(sh1.getShop_id().toString(),obj);
             }
         } else {
-            result += "актуально... ";
             List<Shop> shops = service.getShopByShopId(newShop.getShop_id());
             for (Shop sh1 : shops) {
-                result = result.concat(sh1.toString() + "*********");
+                obj= new JSONObject();
+                obj.put("count",sh1.getCount());
+                obj.put("timestamp",sh1.getTimestamp());
+                resultJson.append(sh1.getShop_id().toString(),obj);
             }
         }
-        return result;
+        return resultJson.toString();
     }
 
 
