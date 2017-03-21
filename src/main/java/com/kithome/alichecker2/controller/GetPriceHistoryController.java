@@ -29,14 +29,19 @@ public class GetPriceHistoryController {
     @Autowired
     ItemService service;
 
+    private String ID;
+
     @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
-    String getPriceHistory(@RequestParam(value = "url", required = true) String url) {
+    String getPriceHistory(@RequestParam(value = "id", required = true) String id) {
 
+        ID=id;
         //JSONArray ar = new JSONArray();
         JSONObject obj = new JSONObject();
         JSONObject resultJson = new JSONObject();
+
+        String url ="https://ru.aliexpress.com/wholesale?SearchText="+ID;
 
         Item newItem = getItemFromUrl(url);//get item info from url
 
@@ -81,23 +86,10 @@ public class GetPriceHistoryController {
         }
 
         Item item = new Item();
-        item.setItem_id(getItemId(url));
+        item.setItem_id(new BigInteger(ID));
         item.setItem_price(getItemPrice(doc));
         item.setTimestamp(new Timestamp(System.currentTimeMillis()));
         return item;
-    }
-
-    private BigInteger getItemId(String url) {
-
-
-        Pattern p = Pattern.compile("\\d*\\d.html");
-        Matcher m = p.matcher(url);
-
-        if (m.find()) {
-            String id = m.group().replaceFirst(".html", "");
-            return new BigInteger(id);
-        }
-        return null;
     }
 
     private BigDecimal getItemPrice(Document doc) {

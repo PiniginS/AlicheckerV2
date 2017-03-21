@@ -24,17 +24,21 @@ import java.util.regex.Pattern;
 @RequestMapping("/getShopGoodsCount")
 public class GetShopGoodsCount {
 
-
+    String ID;
     @Autowired
     ShopService service;
 
     @RequestMapping(method = RequestMethod.GET)
     public
     @ResponseBody
-    String getShopGoodsCount(@RequestParam(value = "url", required = true) String url) {
+    String getShopGoodsCount(@RequestParam(value = "id", required = true) String id) {
+
+        ID=id;
 
         JSONObject obj = new JSONObject();
         JSONObject resultJson = new JSONObject();
+
+        String url ="https://ru.aliexpress.com/wholesale?SearchText="+ID;
 
         Shop newShop = getShopFromUrl(url);//get shop info from url
 
