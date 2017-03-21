@@ -47,7 +47,7 @@ public class GetPriceHistoryController {
             lastcheck = service.getLastcheckByItemId(newItem.getItem_id());
         }
 
-        Timestamp now = new Timestamp(System.currentTimeMillis() - 3 * 10 * 1000);
+        Timestamp now = new Timestamp(System.currentTimeMillis() - 1 * 60 * 1000);
 
         if (lastcheck.before(now)) {
             service.addRecord(newItem);
