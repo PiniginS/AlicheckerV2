@@ -83,7 +83,7 @@ public class GetShopGoodsCount {
 
         Shop shop = new Shop();
         shop.setShop_id(getShopId(doc));
-        shop.setCount(getItemCount(shop.getShop_id()));
+        shop.setCount(getShopCount(shop.getShop_id()));
         shop.setTimestamp(new Timestamp(System.currentTimeMillis()));
         return shop;
     }
@@ -101,7 +101,7 @@ public class GetShopGoodsCount {
         return null;
     }
 
-    private int getItemCount(BigInteger shopId) {
+    private int getShopCount(BigInteger shopId) {
         String url = "https://ru.aliexpress.com/store/all-wholesale-products/" + shopId.toString() + ".html";
         Document doc = new Document("");
         try {

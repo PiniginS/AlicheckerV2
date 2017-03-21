@@ -6,9 +6,6 @@ import java.math.BigInteger;
 import java.sql.Timestamp;
 import java.util.List;
 
-/**
- * Created by spinigin on 20.03.17.
- */
 public interface ShopService {
 
     void addRecord (Shop shop);
