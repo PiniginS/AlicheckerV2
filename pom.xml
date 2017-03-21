@@ -79,6 +79,13 @@
             <version>${mysql.version}</version>
         </dependency>
 
+        <!-- Jsoup -->
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.7.2</version>
+        </dependency>
+
         <!-- Joda-Time -->
         <dependency>
             <groupId>joda-time</groupId>
