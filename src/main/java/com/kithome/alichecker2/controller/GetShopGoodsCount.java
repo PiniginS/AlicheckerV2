@@ -45,7 +45,7 @@ public class GetShopGoodsCount {
             lastcheck = service.getLastcheckByShopId(newShop.getShop_id());
         }
 
-        Timestamp now = new Timestamp(System.currentTimeMillis() - 1 * 10 * 1000);
+        Timestamp now = new Timestamp(System.currentTimeMillis() - 1 * 60 * 1000);
 
         if (lastcheck.before(now)) {
             service.addRecord(newShop);
